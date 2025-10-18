@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="../../static/js/vue.js"></script>
+    <script src="../../static/js/plugin.js"></script>
+    <script src="../../static/js/element.js"></script>
+    <link rel="stylesheet" href="../../static/css/plugin.css" type="text/css">
+    <link rel="stylesheet" href="../../static/css/element.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+    <div id="app" class="wrapper row">
+        <div class="h20"></div>
+
+        <!-- 扫描参数输入 -->
+        <div class="line_edit">
+            <label class="input_tit">接口:</label>
+            <div class="input_group">
+                <select v-model="interface" class="selects w420">
+                    <option v-for="iface in interfaces" :key="iface" :value="iface">{{ iface }}</option>
+                </select>
+                <em>*</em>
+            </div>
+        </div>
+        <div class="line_edit">
+            <label class="input_tit">尝试次数:</label>
+            <div class="input_group">
+                <input type="number" v-model.number="attempts" class="inptText w420">
+                <em>*</em>
+            </div>
+        </div>
+        <div class="line_edit">
+            <label class="input_tit">超时时间(秒):</label>
+            <div class="input_group">
+                <input type="number" v-model.number="timeout" class="inptText w420">
+                <em>*</em>
+            </div>
+        </div>
+
+        <!-- 扫描结果 -->
+        <div class="line_edit">
+            <span class="input_tit">检测结果：</span>
+            <div class="input_group">
+                <textarea readonly="readonly" class="inptText w420" style="height: 180px;">{{ result }}</textarea>
+            </div>
+        </div>
+
+        <div class="h20"></div>
+
+        <!-- 控制按钮 -->
+        <div class="line_edit">
+            <button @click="startDiscovery" v-if="!running" class="btn btn_green btn_confirm">开始扫描</button>
+            <button @click="stopDiscovery" v-else class="btn btn_red btn_confirm">停止扫描</button>
+        </div>
+    </div>
+</body>
+<script type="module">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            interfaces: ['auto'],
+            interface: 'auto',
+            attempts: 3,
+            timeout: 5,
+            running: false,
+            result: '',
+        },
+        mounted() {
+            this.loadInterfaces();
+        },
+        methods: {
+            loadInterfaces() {
+                const payload = {
+                    func_name: 'plugin_pppoe_scan',
+                    action: 'show',
+                    param: { TYPE: 'interface' }
+                };
+                AjaxPost('/Action/call', payload, (response) => {
+                    if (response && response.Result % 10000 === 0 && response.Data && response.Data.interface) {
+                        // 保留 auto
+                        let ifaceList = ['auto'];
+                        // 添加返回的接口，去掉重复的 auto
+                        response.Data.interface.forEach(arr => {
+                            if (arr[0] !== 'auto') ifaceList.push(arr[0]);
+                        });
+                        this.interfaces = ifaceList;
+                        // 保持当前选择，如果不存在则选 auto
+                        if (!this.interfaces.includes(this.interface)) {
+                            this.interface = 'auto';
+                        }
+                    }
+                });
+            },
+            validateParams() {
+                if (this.attempts < 1 || this.attempts > 10) {
+                    this.$message.error('尝试次数必须在1~10之间');
+                    return false;
+                }
+                if (this.timeout < 1 || this.timeout > 60) {
+                    this.$message.error('超时时间必须在1~60秒之间');
+                    return false;
+                }
+                return true;
+            },
+            startDiscovery() {
+                if (!this.validateParams()) return;
+                this.result = '';
+                this.running = true;
+
+                const payload = {
+                    func_name: 'plugin_pppoe_scan',
+                    action: 'start',
+                    param: {
+                        interface: this.interface,
+                        attempts: this.attempts,
+                        timeout: this.timeout
+                    }
+                };
+
+                AjaxPost('/Action/call', payload, (response) => {
+                    if (response && response.Result % 10000 === 0) {
+                        this.fetchResult();
+                    } else {
+                        this.$message.error('扫描启动失败');
+                        this.running = false;
+                    }
+                });
+            },
+            stopDiscovery() {
+                const payload = {
+                    func_name: 'plugin_pppoe_scan',
+                    action: 'stop',
+                    param: {}
+                };
+                AjaxPost('/Action/call', payload, (response) => {
+                    this.running = false;
+                });
+            },
+            fetchResult() {
+                const payload = {
+                    func_name: 'plugin_pppoe_scan',
+                    action: 'show',
+                    param: {TYPE:'data'}
+                };
+                AjaxPost('/Action/call', payload, (response) => {
+                    if (response && response.Result % 10000 === 0 && response.Data && response.Data.data) {
+                        this.result = response.Data.data[0].response;
+                        if (response.Data.data[0].status != 0) {
+                            setTimeout(this.fetchResult, 500);
+                        } else {
+                            this.running = false;
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
+<style scoped>
+    body {
+        margin: 0;
+    }
+    .notice_box {
+    top: 0px;
+    bottom: auto; 
+    }
+</style>
+</html>

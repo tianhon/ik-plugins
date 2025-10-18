@@ -1,0 +1,23 @@
+{
+    "name": "ddnstod",
+    "alias": "DDNSTO",
+    "manufacturer": "iKuai",
+    "version": "2.0.0",
+    "type": "external",
+    "description": "‌DDNSTO是一种远程控制工具，支持多种设备和应用，无需公网IP，提供多种远程控制功能。。<br>地址：<a>https://www.kooldns.cn/</a>",
+    "arch": ["arm64", "mipsle", "x86_64"],
+    "bin": {
+        "arm64": {
+            "bins/ddnstod-arm64": "bins/ddnstod-arm64",
+            "bins/ddwebdav-arm64": "bins/ddwebdav-arm64"
+        },
+        "mipsle": {
+            "bins/ddnstod-mipsle": "bins/ddnstod-mipsle",
+            "bins/ddwebdav-mipsle": "bins/ddwebdav-mipsle"
+        },
+        "x86_64": {
+            "bins/ddnstod-x86_64": "bins/ddnstod-x86_64",
+            "bins/ddwebdav-x86_64": "bins/ddwebdav-x86_64"
+        }
+    }
+}

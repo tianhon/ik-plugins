@@ -1,0 +1,10 @@
+{
+    "name": "pppoe_scan",
+    "alias": "PPPoE Scan",
+    "manufacturer": "iKuai",
+    "version": "1.0.0",
+    "type": "external",
+    "description": "扫描 PPPoE 服务器",
+    "releasenotes": "",
+    "arch": ["x86_64"]
+}

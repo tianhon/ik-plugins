@@ -1,0 +1,38 @@
+{
+    "name": "docker",
+    "alias": "Docker容器",
+    "manufacturer": "iKuai",
+    "version": "1.1.22",
+    "type": "external",
+    "onlyOfflineInstall": "true",
+    "description": "‌通过Docker功能，用户可以打包应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。",
+    "scripts": [
+        "docker_server",
+        "docker_container",
+        "docker_image",
+        "docker_network"
+    ],
+    "arch": ["arm64", "x86_64"],
+    "bin": {
+        "arm64": {
+            "bins/arm64/containerd": "bin/containerd",
+            "bins/arm64/containerd-shim": "bin/containerd-shim",
+            "bins/arm64/ctr": "bin/ctr",
+            "bins/arm64/docker": "bin/docker",
+            "bins/arm64/docker-init": "bin/docker-init",
+            "bins/arm64/docker-proxy": "bin/docker-proxy",
+            "bins/arm64/dockerd": "bin/dockerd",
+            "bins/arm64/runc": "bin/runc"
+        },
+        "x86_64": {
+            "bins/x86_64/containerd": "bin/containerd",
+            "bins/x86_64/containerd-shim": "bin/containerd-shim",
+            "bins/x86_64/ctr": "bin/ctr",
+            "bins/x86_64/docker": "bin/docker",
+            "bins/x86_64/docker-init": "bin/docker-init",
+            "bins/x86_64/docker-proxy": "bin/docker-proxy",
+            "bins/x86_64/dockerd": "bin/dockerd",
+            "bins/x86_64/runc": "bin/runc"
+        }
+    }
+}

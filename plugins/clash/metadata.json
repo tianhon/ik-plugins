@@ -1,0 +1,25 @@
+{
+    "name": "clash",
+    "alias": "Clash",
+    "manufacturer": "iKuai",
+    "version": "2.1.1",
+    "type": "external",
+    "upgradetype": "reinstall",
+    "description": "ShellClash <br>Github地址：<a>https://github.com/juewuy/ShellCrash</a>",
+    "releasenotes": "更新说明：<br>1、升级到最新1.9.2beta3版，同步升级内核为mihome1.19.3。<br>2、默认开启域名嗅探和禁用QUIC流量。",
+    "arch": ["arm64", "mipsle", "x86_64"],
+    "bin": {
+        "arm64": {
+            "bins/CrashCore-arm64.tar.gz": "bin/CrashCore.tar.gz",
+            "bins/ttyd-arm64": "bin/ttyd"
+        },
+        "mipsle": {
+            "bins/CrashCore-mipsle.tar.gz": "bin/CrashCore.tar.gz",
+            "bins/ttyd-mipsle": "bin/ttyd"
+        },
+        "x86_64": {
+            "bins/CrashCore-x86_64.tar.gz": "bin/CrashCore.tar.gz",
+            "bins/ttyd-x86_64": "bin/ttyd"
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "name": "vnts",
+    "alias": "VNT服务端",
+    "manufacturer": "iKuai",
+    "version": "1.0.2",
+    "type": "external",
+    "description": "VNT是一个简便高效的异地组网、内网穿透工具。<br>详情访问：<a>https://rustvnt.com/</a>",
+    "arch": ["arm64", "mipsle", "x86_64"],
+    "bin": {
+        "arm64": {
+            "bins/vnts-arm64.tar.gz": "bin/vnts.tar.gz"
+        },
+        "mipsle": {
+            "bins/vnts-mipsle.tar.gz": "bin/vnts.tar.gz"
+        },
+        "x86_64": {
+            "bins/vnts-x86_64.tar.gz": "bin/vnts.tar.gz"
+        }
+    }
+}
